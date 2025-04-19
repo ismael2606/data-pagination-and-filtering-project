@@ -19,6 +19,8 @@ This function will create and insert/append the elements needed to display a "pa
 */
 
 function showPage(list, page) {
+
+   // display student cards
    let itemsPerPage = 9;
    let startIndex = (page * itemsPerPage) - itemsPerPage; 
    let endIndex = page * itemsPerPage;
@@ -55,12 +57,13 @@ function addPagination(list) {
    ul.innerHTML = '';
    let buttons = '';
 
+   //generate and insert pagination buttons
    for (let i = 1; i <= pageButtons; i++) {
       buttons += `<li><button type="button">${i}</button></li>`;
    }
    ul.insertAdjacentHTML('beforeend', buttons);
 
-
+// setting first pagination button as 'active'
  const firstButton = document.querySelector('.link-list button');
  firstButton.className = 'active';
 
