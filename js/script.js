@@ -18,6 +18,18 @@ Create the `showPage` function
 This function will create and insert/append the elements needed to display a "page" of nine students
 */
 
+//search component
+const header = document.querySelector('header');
+
+header.insertAdjacentHTML('beforeend', 
+   `<label for='search' class='student-search'>
+      <span>Search by name</span>
+      <input id='search' placeholder='Search by name...'>
+      <button type='button'><img src='img/icn-search.svg' alt='Search icon'></button>
+   </label>`
+);
+
+
 function showPage(list, page) {
 
    // display student cards
@@ -29,7 +41,7 @@ function showPage(list, page) {
 
    // display 'no results found' when there's no search match
    if (list.length === 0) {
-      ul.innerHTML = '<p>No results found</p>';
+      ul.innerHTML = '<p>No results found</p>'
    }
 
    // generate student card data
@@ -52,14 +64,13 @@ function showPage(list, page) {
 }
 
 
-
 /*
 Create the `addPagination` function
 This function will create and insert/append the elements needed for the pagination buttons
 */
 
 function addPagination(list) {
-   
+
    const pageButtons = Math.ceil(list.length / 9);
    const ul = document.querySelector('.link-list');
    ul.innerHTML = '';
@@ -100,9 +111,14 @@ function addPagination(list) {
 
 
 
-function studentSearch (list) {
 
-   const search = document.getElementById('search');
+{/* <label for="search" class="student-search">
+<span>Search by name</span>
+<input id="search" placeholder="Search by name...">
+<button type="button"><img src="img/icn-search.svg" alt="Search icon"></button>
+</label> */}
+
+function studentSearch (list) {
 
    search.addEventListener('keyup', (e) => {
       let searchResults = [];
@@ -113,7 +129,7 @@ function studentSearch (list) {
          let studentName = `${list[i].name.first} ${list[i].name.last}`.toLowerCase();
          if (studentName.toLowerCase().includes(inputSearch)) {
             searchResults.push(list[i]);
-         } 
+         }
       }
       showPage(searchResults, 1)
       addPagination(searchResults);
