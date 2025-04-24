@@ -26,16 +26,23 @@ function showPage(list, page) {
    let endIndex = page * itemsPerPage;
    const ul = document.querySelector('.student-list');
    ul.innerHTML = '';
+
+   // display 'no results found' when there's no search match
+   if (list.length === 0) {
+      ul.innerHTML = '<p>No results found</p>';
+   }
+
+   // generate student card data
    for (let i = 0; i < list.length; i++) {
       if (i >= startIndex && i < endIndex) {
          let studentCard = `<li class="student-item cf">
          <div class="student-details">
-           <img class="avatar" src="${data[i].picture.large}" alt="Profile Picture">
-           <h3>${data[i].name.first} ${data[i].name.last}</h3>
-           <span class="email">${data[i].email}</span>
+           <img class="avatar" src="${list[i].picture.large}" alt="Profile Picture">
+           <h3>${list[i].name.first} ${list[i].name.last}</h3>
+           <span class="email">${list[i].email}</span>
          </div>
          <div class="joined-details">
-           <span class="date">Joined ${data[i].registered.date}</span>
+           <span class="date">Joined ${list[i].registered.date}</span>
          </div>
        </li>`
          ul.insertAdjacentHTML('beforeend', studentCard);
@@ -52,6 +59,7 @@ This function will create and insert/append the elements needed for the paginati
 */
 
 function addPagination(list) {
+   
    const pageButtons = Math.ceil(list.length / 9);
    const ul = document.querySelector('.link-list');
    ul.innerHTML = '';
@@ -64,13 +72,24 @@ function addPagination(list) {
    ul.insertAdjacentHTML('beforeend', buttons);
 
 // setting first pagination button as 'active'
- const firstButton = document.querySelector('.link-list button');
- firstButton.className = 'active';
+   const firstButton = document.querySelector('.link-list button')
 
+// remove pagination button when 'no results found' while searching
+   if (firstButton) {
+      firstButton.classList.add('active');
+   } else {
+      return;
+   }
+   
    ul.addEventListener('click', (e) => {
       const clickedButton = e.target.closest('button');
       const activeButton = document.querySelector('button.active');
-      if (clickedButton) {
+
+      // exits function when the button(s) is not clicked
+      if (!clickedButton) {
+         return;
+      } 
+      else {
             activeButton.classList.remove('active'); 
             clickedButton.classList.add('active');
          }
@@ -80,6 +99,29 @@ function addPagination(list) {
 }
 
 
+
+function studentSearch (list) {
+
+   const search = document.getElementById('search');
+
+   search.addEventListener('keyup', (e) => {
+      let searchResults = [];
+      let inputSearch = e.target.value.toLowerCase();
+
+      //checks for search matches and add it to the searchResults list
+      for (let i = 0; i < list.length; i++) {
+         let studentName = `${list[i].name.first} ${list[i].name.last}`.toLowerCase();
+         if (studentName.toLowerCase().includes(inputSearch)) {
+            searchResults.push(list[i]);
+         } 
+      }
+      showPage(searchResults, 1)
+      addPagination(searchResults);
+   })
+}
+
+
 // Call functions
+studentSearch(data);
 addPagination(data);
 showPage(data, 1);
